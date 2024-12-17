@@ -17,15 +17,8 @@ android.api = 28
 android.minapi = 21
 android.ndk = 23.1.7779620
 android.archs = armeabi-v7a arm64-v8a
-
-# Build options
+android.allow_backup = True
 android.accept_sdk_license = True
-android.gradle_dependencies = org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.50
-android.copy_libs = 1
-
-# Gradle configuration
-android.gradle_dependencies = org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.50
-android.enable_androidx = True
 
 [buildozer]
 log_level = 2
