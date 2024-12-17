@@ -1,0 +1,21 @@
+{
+    "name": "好习惯追踪器",
+    "short_name": "好习惯",
+    "description": "帮助你培养和追踪好习惯的应用",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#f5f7fa",
+    "theme_color": "#4CAF50",
+    "icons": [
+        {
+            "src": "/static/icons/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/static/icons/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

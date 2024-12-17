@@ -1,0 +1,186 @@
+:root {
+    --primary-color: #4CAF50;
+    --secondary-color: #2196F3;
+    --background-color: #f5f7fa;
+    --card-background: #ffffff;
+    --text-primary: #2c3e50;
+    --text-secondary: #7f8c8d;
+}
+
+body {
+    background-color: var(--background-color);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding-top: 2rem;
+}
+
+.container {
+    max-width: 1200px;
+    padding: 0 2rem;
+}
+
+h1 {
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+.add-habit-btn {
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 50px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.add-habit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card {
+    background: var(--card-background);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background: transparent;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+}
+
+.card-header h5 {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.form-control {
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+    border-color: var(--primary-color);
+}
+
+.btn {
+    border-radius: 10px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #43a047;
+    border-color: #43a047;
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background: linear-gradient(45deg, var(--primary-color), #66bb6a);
+    border: none;
+    box-shadow: 0 4px 6px rgba(76, 175, 80, 0.2);
+}
+
+.btn-success:hover {
+    background: linear-gradient(45deg, #43a047, #57a85f);
+    transform: translateY(-2px);
+}
+
+.btn-success:disabled {
+    background: linear-gradient(45deg, #a5d6a7, #c8e6c9);
+    opacity: 0.8;
+    transform: none;
+}
+
+.streak-badge {
+    background: linear-gradient(45deg, var(--secondary-color), #64b5f6);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    font-weight: 600;
+    margin: 0.5rem 0;
+}
+
+.habit-description {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin: 1rem 0;
+}
+
+.progress {
+    height: 8px;
+    border-radius: 4px;
+    margin: 1rem 0;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    background: linear-gradient(45deg, var(--primary-color), #66bb6a);
+    border-radius: 4px;
+}
+
+.modal-content {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    .add-habit-btn {
+        padding: 0.5rem 1rem;
+    }
+}

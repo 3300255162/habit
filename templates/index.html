@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>好习惯追踪器</title>
+    <!-- PWA 相关标签 -->
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#4CAF50">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="好习惯">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='icons/icon-192x192.png') }}">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-0">好习惯追踪器</h1>
+            <button class="btn btn-primary add-habit-btn" data-bs-toggle="modal" data-bs-target="#addHabitModal">
+                <i class="bi bi-plus-lg me-2"></i>添加新习惯
+            </button>
+        </div>
+
+        <!-- 习惯列表 -->
+        <div class="row">
+            {% for habit in habits %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">{{ habit.name }}</h5>
+                        <span class="streak-badge">
+                            <i class="bi bi-lightning-charge-fill me-1"></i>
+                            {{ habit.current_streak }}天
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <p class="habit-description">{{ habit.description }}</p>
+                        
+                        <!-- 进度条 -->
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" 
+                                 style="width: {{ (habit.current_streak / habit.target_days * 100)|round|int }}%"
+                                 aria-valuenow="{{ habit.current_streak }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="{{ habit.target_days }}">
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <small class="text-muted">
+                                目标：{{ habit.target_days }}天
+                            </small>
+                            <small class="text-muted">
+                                进度：{{ (habit.current_streak / habit.target_days * 100)|round|int }}%
+                            </small>
+                        </div>
+                        
+                        <button class="btn btn-success w-100 check-in-btn" 
+                                data-habit-id="{{ habit.id }}"
+                                onclick="checkIn({{ habit.id }})">
+                            <i class="bi bi-check2-circle me-2"></i>
+                            今日打卡
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- 添加新习惯的模态框 -->
+    <div class="modal fade" id="addHabitModal" tabindex="-1" aria-labelledby="addHabitModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addHabitModalLabel">
+                        <i class="bi bi-plus-circle me-2"></i>添加新习惯
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url_for('add_habit') }}" method="POST" id="addHabitForm">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">习惯名称</label>
+                            <input type="text" class="form-control" id="name" name="name" required 
+                                   placeholder="例如：每天读书、晨跑、冥想等">
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">描述</label>
+                            <textarea class="form-control" id="description" name="description" rows="2"
+                                      placeholder="描述一下你想培养的习惯..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="target_days" class="form-label">目标天数</label>
+                            <input type="number" class="form-control" id="target_days" name="target_days" 
+                                   value="21" min="1" max="365">
+                            <div class="form-text">研究表明，养成一个新习惯平均需要21天</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="submit" form="addHabitForm" class="btn btn-primary">
+                        <i class="bi bi-plus-lg me-2"></i>添加习惯
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // 注册 Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/static/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+
+        // 添加到主屏幕提示
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // 显示安装提示
+            Sweetalert2.fire({
+                title: '添加到主屏幕',
+                text: '安装这个应用到你的手机，随时查看和记录你的习惯！',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: '安装',
+                cancelButtonText: '取消'
+            }).then((result) => {
+                if (result.isConfirmed && deferredPrompt) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User accepted the install prompt');
+                        }
+                        deferredPrompt = null;
+                    });
+                }
+            });
+        });
+
+        function checkIn(habitId) {
+            fetch(`/check_in/${habitId}`, {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // 更新连续天数显示
+                    document.getElementById(`streak-${habitId}`).textContent = data.current_streak;
+                    
+                    // 禁用按钮
+                    const btn = document.querySelector(`[data-habit-id="${habitId}"]`);
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="bi bi-check2-all me-2"></i>今日已打卡';
+                    
+                    // 显示成功提示
+                    Sweetalert2.fire({
+                        icon: 'success',
+                        title: '打卡成功！',
+                        text: `已连续打卡 ${data.current_streak} 天`,
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Sweetalert2.fire({
+                    icon: 'error',
+                    title: '打卡失败',
+                    text: '请稍后重试'
+                });
+            });
+        }
+
+        // 添加习惯成功后关闭模态框
+        document.getElementById('addHabitForm').addEventListener('submit', function() {
+            setTimeout(() => {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addHabitModal'));
+                modal.hide();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
