@@ -41,9 +41,20 @@ jobs:
         restore-keys: |
           buildozer-
 
-    - name: Install system dependencies
+    - name: Fix broken packages
       run: |
         sudo apt-get update
+        sudo apt-get install -f
+        sudo dpkg --configure -a
+        sudo apt-get clean
+        sudo apt-get update
+
+    - name: Install libunwind
+      run: |
+        sudo apt-get install -y libunwind8-dev
+
+    - name: Install system dependencies
+      run: |
         sudo apt-get install -y \
           python3-pip \
           build-essential \
@@ -60,9 +71,6 @@ jobs:
           libavformat-dev \
           libavcodec-dev \
           zlib1g-dev \
-          libgstreamer1.0-dev \
-          gstreamer1.0-plugins-base \
-          gstreamer1.0-plugins-good \
           autoconf \
           automake \
           libtool \
@@ -73,6 +81,13 @@ jobs:
           zip \
           openjdk-11-jdk \
           lld
+
+    - name: Install GStreamer
+      run: |
+        sudo apt-get install -y \
+          libgstreamer1.0-dev \
+          gstreamer1.0-plugins-base \
+          gstreamer1.0-plugins-good
 
     - name: Prepare fonts
       run: |
