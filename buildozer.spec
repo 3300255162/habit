@@ -12,16 +12,22 @@ package.domain = org.habit
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas,ttf,db
+source.include_exts = py,png,jpg,kv,atlas,ttf,db,otf
+
+# (list) Source files to include (let empty to include all the files)
+source.include_patterns = fonts/*
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = tests, bin, .git, __pycache__
+source.exclude_dirs = tests, bin, .git, __pycache__, .github, .buildozer
+
+# (list) List of directory to exclude (let empty to not exclude anything)
+source.exclude_patterns = Thumbs.db
 
 # (str) Application versioning (method 1)
 version = 1.0
 
 # (list) Application requirements
-requirements = python3,kivy,sqlite3,pillow
+requirements = python3,kivy,sqlite3,pillow,plyer
 
 # (str) Supported orientations (one of landscape, portrait or all)
 orientation = portrait
@@ -36,7 +42,7 @@ android.permissions = WRITE_EXTERNAL_STORAGE
 android.ndk = 25
 
 # (int) Target Android API, should be as high as possible.
-android.api = 31
+android.api = 33
 
 # (int) Minimum API your APK will support.
 android.minapi = 21
@@ -57,7 +63,7 @@ android.allow_backup = True
 android.backup_rules = backup_rules.xml
 
 # (bool) Skip the Android SDK installation
-android.skip_update = True
+android.skip_update = False
 
 # (bool) Skip the Android NDK installation
 android.skip_ndk_install = False
@@ -67,6 +73,12 @@ android.private_storage = True
 
 # (str) Android logcat filters to use
 android.logcat_filters = *:S python:D
+
+# (bool) Copy library instead of making a libpymodules.so
+android.copy_libs = 1
+
+# (int) Android NDK API to use. This is the minimum API your app will support.
+android.ndk_api = 21
 
 [buildozer]
 # (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
