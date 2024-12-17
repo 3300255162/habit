@@ -23,8 +23,10 @@ class HabitLog(db.Model):
     check_in_date = db.Column(db.DateTime, nullable=False)
     notes = db.Column(db.String(200))
 
+# 确保数据库存在
 with app.app_context():
-    db.create_all()
+    if not os.path.exists('habits.db'):
+        db.create_all()
 
 @app.route('/')
 def index():
@@ -48,16 +50,18 @@ def check_in(habit_id):
     habit = Habit.query.get_or_404(habit_id)
     now = datetime.utcnow()
     
-    # Create new habit log
+    # 创建新的打卡记录
     log = HabitLog(habit_id=habit_id, check_in_date=now)
     db.session.add(log)
     
-    # Update streak
+    # 更新连续天数
     if habit.last_check_in:
-        time_diff = now - habit.last_check_in
-        if time_diff.days <= 1:  # If checked in consecutive days
+        days_diff = (now.date() - habit.last_check_in.date()).days
+        if days_diff == 1:  # 连续打卡
             habit.current_streak += 1
-        else:
+        elif days_diff == 0:  # 今天已经打卡
+            return jsonify({'error': '今天已经打卡了'}), 400
+        else:  # 断签，重新开始计数
             habit.current_streak = 1
     else:
         habit.current_streak = 1
@@ -67,16 +71,21 @@ def check_in(habit_id):
     
     return jsonify({
         'success': True,
-        'current_streak': habit.current_streak
+        'message': f'打卡成功！当前连续{habit.current_streak}天',
+        'streak': habit.current_streak
     })
 
-@app.route('/static/sw.js')
-def sw():
-    return send_from_directory('static', 'sw.js', mimetype='application/javascript')
+@app.route('/static/<path:path>')
+def serve_static(path):
+    return send_from_directory('static', path)
 
-@app.route('/static/manifest.json')
-def manifest():
-    return send_from_directory('static', 'manifest.json', mimetype='application/json')
+@app.route('/sw.js')
+def serve_worker():
+    return send_from_directory('static', 'sw.js')
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+@app.route('/manifest.json')
+def serve_manifest():
+    return send_from_directory('static', 'manifest.json')
+
+# Vercel 需要的 WSGI 应用
+app = app
