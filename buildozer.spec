@@ -1,6 +1,6 @@
 [app]
 # (str) Title of your application
-title = 好习惯追踪器
+title = HabitTracker
 
 # (str) Package name
 package.name = habittracker
@@ -12,22 +12,19 @@ package.domain = org.habit
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas,ttf,db,otf
-
-# (list) Source files to include (let empty to include all the files)
-source.include_patterns = fonts/*
+source.include_exts = py,png,jpg,kv,atlas,ttf
 
 # (list) List of directory to exclude (let empty to not exclude anything)
 source.exclude_dirs = tests, bin, .git, __pycache__, .github, .buildozer
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_patterns = Thumbs.db
+source.exclude_patterns = buildozer.spec
 
 # (str) Application versioning (method 1)
 version = 1.0
 
 # (list) Application requirements
-requirements = python3,kivy,sqlite3,pillow,plyer
+requirements = python3,kivy,sqlite3
 
 # (str) Supported orientations (one of landscape, portrait or all)
 orientation = portrait
@@ -39,7 +36,7 @@ fullscreen = 0
 android.permissions = WRITE_EXTERNAL_STORAGE
 
 # (str) Android NDK version to use
-android.ndk = 25
+android.ndk = 25b
 
 # (int) Target Android API, should be as high as possible.
 android.api = 33
