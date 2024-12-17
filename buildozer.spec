@@ -36,7 +36,7 @@ fullscreen = 0
 android.permissions = WRITE_EXTERNAL_STORAGE
 
 # (str) Android NDK version to use
-android.ndk = 23b
+android.ndk = 23.1.7779620
 
 # (int) Target Android API, should be as high as possible.
 android.api = 28
@@ -82,6 +82,12 @@ android.accept_sdk_license = True
 
 # (str) Android build tools version to use
 android.build_tools_version = 28.0.3
+
+# (str) Android SDK path
+android.sdk_path = /usr/local/lib/android-sdk
+
+# (str) Android NDK path
+android.ndk_path = /usr/local/lib/android-sdk/ndk/23.1.7779620
 
 [buildozer]
 # (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
