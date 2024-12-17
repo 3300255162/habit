@@ -8,8 +8,28 @@ from kivy.uix.textinput import TextInput
 from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.utils import get_color_from_hex
+from kivy.core.text import LabelBase
 from datetime import datetime
 import sqlite3
+import os
+
+# 注册中文字体
+fonts_dir = os.path.join(os.path.dirname(__file__), 'fonts')
+os.makedirs(fonts_dir, exist_ok=True)
+
+if os.path.exists(os.path.join(fonts_dir, 'simhei.ttf')):
+    LabelBase.register(name='SimHei', fn_regular=os.path.join(fonts_dir, 'simhei.ttf'))
+elif os.name == 'nt':  # Windows
+    LabelBase.register(name='SimHei', fn_regular='C:/Windows/Fonts/simhei.ttf')
+else:  # Linux/Mac/Android
+    try:
+        LabelBase.register(name='SimHei', fn_regular='/system/fonts/DroidSansFallback.ttf')
+    except:
+        pass
+
+# 设置默认字体
+from kivy.config import Config
+Config.set('kivy', 'default_font', ['SimHei', 'DroidSansFallback'])
 
 class AddHabitPopup(Popup):
     def __init__(self, add_callback, **kwargs):
@@ -21,20 +41,20 @@ class AddHabitPopup(Popup):
         layout = BoxLayout(orientation='vertical', padding=dp(10), spacing=dp(10))
 
         # 习惯名称输入
-        layout.add_widget(Label(text='习惯名称:', size_hint_y=None, height=dp(30)))
-        self.name_input = TextInput(multiline=False, size_hint_y=None, height=dp(40))
+        layout.add_widget(Label(text='习惯名称:', size_hint_y=None, height=dp(30), font_name='SimHei'))
+        self.name_input = TextInput(multiline=False, size_hint_y=None, height=dp(40), font_name='SimHei')
         layout.add_widget(self.name_input)
 
         # 描述输入
-        layout.add_widget(Label(text='描述:', size_hint_y=None, height=dp(30)))
-        self.description_input = TextInput(multiline=True, size_hint_y=None, height=dp(100))
+        layout.add_widget(Label(text='描述:', size_hint_y=None, height=dp(30), font_name='SimHei'))
+        self.description_input = TextInput(multiline=True, size_hint_y=None, height=dp(100), font_name='SimHei')
         layout.add_widget(self.description_input)
 
         # 目标天数输入
-        layout.add_widget(Label(text='目标天数:', size_hint_y=None, height=dp(30)))
+        layout.add_widget(Label(text='目标天数:', size_hint_y=None, height=dp(30), font_name='SimHei'))
         self.target_days_input = TextInput(
             text='21', multiline=False, input_filter='int',
-            size_hint_y=None, height=dp(40)
+            size_hint_y=None, height=dp(40), font_name='SimHei'
         )
         layout.add_widget(self.target_days_input)
 
@@ -43,7 +63,8 @@ class AddHabitPopup(Popup):
             text='添加',
             size_hint_y=None,
             height=dp(50),
-            background_color=get_color_from_hex('#2196F3')
+            background_color=get_color_from_hex('#2196F3'),
+            font_name='SimHei'
         )
         confirm_button.bind(on_release=self.add_habit)
         layout.add_widget(confirm_button)
@@ -70,6 +91,7 @@ class HabitButton(Button):
         self.background_color = get_color_from_hex('#4CAF50')
         self.size_hint_y = None
         self.height = dp(80)
+        self.font_name = 'SimHei'
 
 class HabitTrackerApp(App):
     def build(self):
@@ -89,7 +111,8 @@ class HabitTrackerApp(App):
             size_hint_y=None,
             height=dp(50),
             color=get_color_from_hex('#2196F3'),
-            font_size=dp(24)
+            font_size=dp(24),
+            font_name='SimHei'
         )
         self.main_layout.add_widget(title)
 
@@ -109,7 +132,8 @@ class HabitTrackerApp(App):
             text='添加新习惯',
             size_hint_y=None,
             height=dp(60),
-            background_color=get_color_from_hex('#2196F3')
+            background_color=get_color_from_hex('#2196F3'),
+            font_name='SimHei'
         )
         add_button.bind(on_release=self.show_add_dialog)
         self.main_layout.add_widget(add_button)
@@ -193,7 +217,7 @@ class HabitTrackerApp(App):
             
             popup = Popup(
                 title='打卡成功',
-                content=Label(text=f'已连续打卡 {current_streak} 天！'),
+                content=Label(text=f'已连续打卡 {current_streak} 天！', font_name='SimHei'),
                 size_hint=(0.8, 0.3)
             )
             popup.open()
