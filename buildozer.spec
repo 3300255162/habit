@@ -47,8 +47,8 @@ android.minapi = 21
 # (str) Android SDK version to use
 android.sdk = 28
 
-# (str) The Android arch to build for, choices: armeabi-v7a, arm64-v8a, x86
-android.arch = arm64-v8a
+# (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86
+android.archs = armeabi-v7a, arm64-v8a
 
 # (bool) Allow the backup of your app's data on android devices.
 android.allow_backup = True
@@ -76,6 +76,12 @@ android.ndk_api = 21
 
 # (list) Android gradle dependencies to add
 android.gradle_dependencies = org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.50
+
+# (bool) Accept SDK license
+android.accept_sdk_license = True
+
+# (str) Android build tools version to use
+android.build_tools_version = 28.0.3
 
 [buildozer]
 # (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))

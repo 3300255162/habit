@@ -49,6 +49,13 @@ jobs:
         sudo apt-get clean
         sudo apt-get update
 
+    - name: Install Android SDK and tools
+      run: |
+        sudo apt-get install -y \
+          android-sdk \
+          android-sdk-platform-tools \
+          aidl
+
     - name: Install libunwind
       run: |
         sudo apt-get install -y libunwind8-dev
@@ -89,6 +96,10 @@ jobs:
           gstreamer1.0-plugins-base \
           gstreamer1.0-plugins-good
 
+    - name: Accept Android licenses
+      run: |
+        yes | sdkmanager --licenses || true
+
     - name: Prepare fonts
       run: |
         python prepare_fonts.py
@@ -99,6 +110,8 @@ jobs:
         buildozer android debug
       env:
         BUILDOZER_WARN_ON_ROOT: 0
+        ANDROID_HOME: /usr/lib/android-sdk
+        ANDROID_NDK_HOME: /usr/lib/android-ndk
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
