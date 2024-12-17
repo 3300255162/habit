@@ -24,7 +24,7 @@ source.exclude_patterns = buildozer.spec
 version = 1.0
 
 # (list) Application requirements
-requirements = python3,kivy==2.2.1,sqlite3
+requirements = python3,kivy==2.2.1
 
 # (str) Supported orientations (one of landscape, portrait or all)
 orientation = portrait
@@ -39,16 +39,13 @@ android.permissions = WRITE_EXTERNAL_STORAGE
 android.ndk = 23b
 
 # (int) Target Android API, should be as high as possible.
-android.api = 31
+android.api = 28
 
 # (int) Minimum API your APK will support.
 android.minapi = 21
 
 # (str) Android SDK version to use
-android.sdk = 31
-
-# (bool) Accept SDK license
-android.accept_sdk_license = True
+android.sdk = 28
 
 # (str) The Android arch to build for, choices: armeabi-v7a, arm64-v8a, x86
 android.arch = arm64-v8a
@@ -76,6 +73,9 @@ android.copy_libs = 1
 
 # (int) Android NDK API to use. This is the minimum API your app will support.
 android.ndk_api = 21
+
+# (list) Android gradle dependencies to add
+android.gradle_dependencies = org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.50
 
 [buildozer]
 # (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
