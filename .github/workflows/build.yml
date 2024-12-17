@@ -7,22 +7,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: kivy/buildozer:latest
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Build APK
-      run: |
-        apt-get update && apt-get install -y git
-        buildozer android debug
-      env:
-        BUILDOZER_WARN_ON_ROOT: 0
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
 
-    - name: Upload APK
+    - name: Build with Buildozer
+      uses: ArtemSBulgakov/buildozer-action@v1
+      id: buildozer
+      with:
+        workdir: .
+        buildozer_version: stable
+
+    - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: habit-tracker-debug
-        path: bin/*.apk
-        retention-days: 5
+        name: package
+        path: ${{ steps.buildozer.outputs.filename }}
