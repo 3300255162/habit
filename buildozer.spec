@@ -12,16 +12,16 @@ package.domain = org.habit
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas,ttf
+source.include_exts = py,png,jpg,kv,atlas,ttf,db
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = build, dist, __pycache__
+source.exclude_dirs = tests, bin, .git, __pycache__
 
 # (str) Application versioning (method 1)
 version = 1.0
 
 # (list) Application requirements
-requirements = python3,kivy,sqlite3,datetime
+requirements = python3,kivy,sqlite3,pillow
 
 # (str) Supported orientations (one of landscape, portrait or all)
 orientation = portrait
@@ -30,10 +30,10 @@ orientation = portrait
 fullscreen = 0
 
 # (list) Permissions
-android.permissions = WRITE_EXTERNAL_STORAGE,INTERNET
+android.permissions = WRITE_EXTERNAL_STORAGE
 
 # (str) Android NDK version to use
-android.ndk = 25b
+android.ndk = 25
 
 # (int) Target Android API, should be as high as possible.
 android.api = 31
@@ -49,6 +49,12 @@ android.accept_sdk_license = True
 
 # (str) The Android arch to build for, choices: armeabi-v7a, arm64-v8a, x86
 android.arch = arm64-v8a
+
+# (bool) Allow the backup of your app's data on android devices.
+android.allow_backup = True
+
+# (str) XML file for custom backup rules (e.g. specifying storage paths, whether to backup to the external device, etc.)
+android.backup_rules = backup_rules.xml
 
 # (bool) Skip the Android SDK installation
 android.skip_update = True
@@ -67,7 +73,7 @@ android.logcat_filters = *:S python:D
 log_level = 2
 
 # (int) Display warning if buildozer is run as root (0 = False, 1 = True)
-warn_on_root = 1
+warn_on_root = 0
 
 # (str) Path to build artifact storage, absolute or relative to spec file
 build_dir = ./.buildozer
