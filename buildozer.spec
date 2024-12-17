@@ -24,7 +24,7 @@ source.exclude_patterns = buildozer.spec
 version = 1.0
 
 # (list) Application requirements
-requirements = python3,kivy,sqlite3
+requirements = python3,kivy==2.2.1,sqlite3
 
 # (str) Supported orientations (one of landscape, portrait or all)
 orientation = portrait
@@ -36,16 +36,16 @@ fullscreen = 0
 android.permissions = WRITE_EXTERNAL_STORAGE
 
 # (str) Android NDK version to use
-android.ndk = 25b
+android.ndk = 23b
 
 # (int) Target Android API, should be as high as possible.
-android.api = 33
+android.api = 31
 
 # (int) Minimum API your APK will support.
 android.minapi = 21
 
 # (str) Android SDK version to use
-android.sdk = 33
+android.sdk = 31
 
 # (bool) Accept SDK license
 android.accept_sdk_license = True
